@@ -1,6 +1,6 @@
 ---
 
-name: get_sequence_by_coordinate
+name: get_fasta_by_coordinate
 description: 'An Araport API that uses Thalemine Query to retrieve a json file with the fasta sequence.'
 version: 0.1
 
