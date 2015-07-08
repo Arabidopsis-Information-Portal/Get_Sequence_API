@@ -60,5 +60,5 @@ endpoints:
         type: int
         required: false
   /list:
-    description: "Return a list of A.thaliana chromosome identifiers.
+    description: "Return a list of A.thaliana chromosome identifiers."
 
