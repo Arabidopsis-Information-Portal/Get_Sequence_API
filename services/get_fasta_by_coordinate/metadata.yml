@@ -15,7 +15,7 @@ authors:
 
 
 type: query
-main_module: services.getFastaByCoordinate.main.py
+main_module: services.get_fasta_by_coordinate.main.py
 url: https://github.com/Arabidopsis-Information-Portal/Get_Sequence_API
 validate_request: true
 timeout: 120

@@ -1,4 +1,5 @@
-
+import json
+import re
 
 def is_valid_chr(chr):
     """
