@@ -1,5 +1,7 @@
+---
+
 name: getSequenceByCoordinate
-description: 'Araport API that uses Thalemine Query to retrieve a json file with the fasta sequence provided a coordinate.'
+description: 'An Araport API that uses Thalemine Query to retrieve a json file with the fasta sequence.'
 version: 0.1
 
 requirements:
