@@ -1,0 +1,62 @@
+name: getSequenceByCoordinate
+description: 'Araport API that uses Thalemine Query to retrieve a json file with the fasta sequence provided a coordinate.'
+version: 0.1
+
+requirements:
+  - intermine
+  
+authors:
+  - name: Maria Kim
+    email: msarmien@jcvi.org
+    sponsor_organization: JCVI
+    sponsor_uri: http://www.jcvi.org/
+
+
+type: query
+main_module: services.getFastaByCoordinate.main.py
+url: https://github.com/Arabidopsis-Information-Portal/Get_Sequence_API
+validate_request: true
+timeout: 120
+whitelist:
+    - www.araport.org
+icon: araport.png
+
+tags:
+    - sequence
+    - gene
+    - mrna
+    - search
+    - api
+    - intermine
+    - dev
+    - arabidopsis
+    - msarmien
+
+endpoints:
+  /search:
+    description: "Returns a json with the fasta sequence provided a coordinate."
+    parameters:
+      - name: Chr
+        description: "Chromosome id."
+        type: string
+        required: false
+        default: "1"
+      - name: Start
+        description: "Start coordinate of desired region."
+        type: int
+        required: false
+      - name: End
+        description: "End coordinate of desired region."
+        type: int
+        required: false
+      - name: ReverseComplement
+        description: "Option to reverse-complement."
+        type: int
+        required: false
+      - name: Flanking
+        description: "Option to add upstream and downstream flanking sequence to the target sequence region. Max of 10000bp."
+        type: int
+        required: false
+  /list:
+  description: "Return a list of A.thaliana chromosome identifiers.
+
