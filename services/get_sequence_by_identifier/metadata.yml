@@ -35,3 +35,5 @@ validate_request: true
 version: 0.2
 whitelist: 
   - www.araport.org
+requirements:
+  - intermine
