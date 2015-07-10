@@ -22,12 +22,14 @@ endpoints:
         description: "Start coordinate of the desired region"
         name: start
         required: true
-        type: int
+        type: integer
+	format: int64
       - 
         description: "End coordinate of the desired region"
         name: end
         required: true
-        type: int
+        type: integer
+	format: int64
 icon: araport.png
 main_module: services.get_sequence_by_coordinate.main.py
 name: get_sequence_by_coordinate
