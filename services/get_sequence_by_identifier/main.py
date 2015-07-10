@@ -1,8 +1,6 @@
 import services.common.tools as tools
 import sys
 import json
-import dicttoxml
-from intermine.webservice import Service
 
 def search(args):
     """
