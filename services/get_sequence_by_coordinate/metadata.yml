@@ -45,7 +45,7 @@ type: query
 url: "https://www.araport.org"
 validate_request: true
 version: 0.2
-whitelist: 
-  - www.araport.org
 requirements: 
   - intermine
+whitelist: 
+  - apps.araport.org
