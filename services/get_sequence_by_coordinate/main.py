@@ -13,7 +13,7 @@ def search(args):
     tools.get_sequence_data(args['start'],args['end'],query_xml)
     
     
-def list():
+def list(args):
     """
     List all of the available sequence ids for Arabidopsis thaliana Col-0 genome
     """

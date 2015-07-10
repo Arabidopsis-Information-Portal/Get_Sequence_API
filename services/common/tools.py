@@ -58,11 +58,12 @@ def get_sequence_data(start,end,query_xml):
 
     # Validate the results
     if response.status_code != 200:
-        raise Exception('Can\'t connect to server. Status code: ' + str(response.status_code))
+        raise Exception('There is a problem. Status code: ' + str(response.status_code))
 
     # Print the results
     sequence_json = json.loads(response.text)
-    print sequence_json
+
+    print json.jumps(sequence_json, indent=2)
     print '---'
 
 def print_list_of_chromosome_ids():
@@ -104,6 +105,7 @@ def get_gene_data(gene):
     query.add_view("chromosomeLocation.start","chromosomeLocation.end", "chromosome.primaryIdentifier")
 
     # Iterate through results
+    coordinate = {}
     for row in query.rows():
 
         # load into a dict
@@ -113,4 +115,4 @@ def get_gene_data(gene):
             'chromosome': row["chromosome.primaryIdentifier"]
         }
 
-        return coordinate
+    return coordinate

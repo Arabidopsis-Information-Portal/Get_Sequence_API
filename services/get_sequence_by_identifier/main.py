@@ -1,6 +1,4 @@
 import services.common.tools as tools
-import sys
-import json
 
 def search(args):
     """
@@ -18,7 +16,7 @@ def search(args):
 
     
     
-def list():
+def list(args):
     raise Exception('Does not provide any kind of list.')
 
     
