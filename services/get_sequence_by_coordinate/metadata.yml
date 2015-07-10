@@ -1,57 +1,47 @@
----
-
-name: get_sequence_by_coordinate
-description: 'An Araport API wrapper around Thalemine Sequene Access Endpoint to retrieve a json file with a region's nucleotide sequence.'
-version: 0.1
-
-requirements:
-  - intermine
-  
-authors:
-  - name: Maria Kim
+--- 
+authors: 
+  - 
     email: msarmien@jcvi.org
+    name: "Maria Kim"
     sponsor_organization: JCVI
-    sponsor_uri: http://www.jcvi.org/
-
-
-type: query
-main_module: services.get_sequence_by_coordinate.main.py
-url: https://github.com/Arabidopsis-Information-Portal/Get_Sequence_API
-type: query
-validate_request: true
-timeout: 120
-whitelist:
-    - www.araport.org
-icon: araport.png
-
-tags:
-    - sequence
-    - gene
-    - mrna
-    - search
-    - api
-    - intermine
-    - dev
-    - arabidopsis
-    - msarmien
-
-endpoints:
-  /search:
-    description: "Returns a json with the nucleotide sequence provided a coordinate."
-    parameters:
-      - name: chromosome
-        description: "Chromosome id."
-        type: string
-        required: true
-        default: "Chr1"
-      - name: start
-        description: "Start coordinate of desired region."
-        type: int
-        required: true
-      - name: end
-        description: "End coordinate of desired region."
-        type: int
-        required: true
-  /list:
+    sponsor_uri: "http://www.jcvi.org"
+description: "An Araport API wrapper around Thalemine Sequene Access Endpoint to retrieve a json file with a region's nucleotide sequence."
+endpoints: 
+  /list: 
     description: "Return a list of A.thaliana chromosome identifiers and length."
-
+  /search: 
+    description: "Returns a json with the nucleotide sequence provided a coordinate."
+    parameters: 
+      - 
+        default: Chr1
+        description: "Chromosome identifier"
+        name: chromosome
+        required: true
+        type: string
+      - 
+        description: "Start coordinate of the desired region"
+        name: start
+        required: true
+        type: int
+      - 
+        description: "End coordinate of the desired region"
+        name: end
+        required: true
+        type: int
+icon: araport.png
+main_module: services.get_sequence_by_coordinate.main.py
+name: get_sequence_by_coordinate
+tags: 
+  - arabidopsis
+  - sequence
+  - gene
+  - api
+  - intermine
+  - msarmien
+timeout: 120
+type: query
+url: "https://www.araport.org"
+validate_request: true
+version: 0.2
+whitelist: 
+  - www.araport.org

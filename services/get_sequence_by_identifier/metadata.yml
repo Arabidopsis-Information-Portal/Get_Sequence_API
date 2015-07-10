@@ -1,49 +1,37 @@
----
-
-name: get_sequence_by_identifier
-description: 'An Araport API wrapper around Thalemine Sequene Access Endpoint to retrieve a json file with a region's nucleotide sequence.'
-version: 0.1
-
-requirements:
-  - intermine
-  
-authors:
-  - name: Maria Kim
+--- 
+authors: 
+  - 
     email: msarmien@jcvi.org
+    name: "Maria Kim"
     sponsor_organization: JCVI
-    sponsor_uri: http://www.jcvi.org/
-
-
-type: query
-main_module: services.get_sequence_by_identifier.main.py
-url: https://github.com/Arabidopsis-Information-Portal/Get_Sequence_API
-type: query
-validate_request: true
-timeout: 120
-whitelist:
-    - www.araport.org
-icon: araport.png
-
-tags:
-    - sequence
-    - gene
-    - mrna
-    - search
-    - api
-    - intermine
-    - dev
-    - arabidopsis
-    - msarmien
-
-endpoints:
-  /search:
+    sponsor_uri: "http://www.jcvi.org"
+description: "An Araport API wrapper around Thalemine Sequene Access Endpoint to retrieve a json file with a region's nucleotide sequence."
+endpoints: 
+  /list: 
+    description: "Does not provide any list"
+  /search: 
     description: "Returns a json with the nucleotide sequence provided a gene identifier."
-    parameters:
-      - name: identifier
-        description: "ATG locus"
-        type: string
+    parameters: 
+      - 
+        default: AT1G01210
+        description: "Gene identifier"
+        name: identifier
         required: true
-        default: "ATG01210"
-  /list:
-    description: "Return a list of A.thaliana genes"
-
+        type: string
+icon: araport.png
+main_module: services.get_sequence_by_identifier.main.py
+name: get_sequence_by_identifier
+tags: 
+  - arabidopsis
+  - sequence
+  - gene
+  - api
+  - intermine
+  - msarmien
+timeout: 120
+type: query
+url: "https://www.araport.org"
+validate_request: true
+version: 0.2
+whitelist: 
+  - www.araport.org
