@@ -63,7 +63,7 @@ def get_sequence_data(start,end,query_xml):
     # Print the results
     sequence_json = json.loads(response.text)
 
-    print json.jumps(sequence_json, indent=2)
+    print json.dumps(sequence_json, indent=2)
     print '---'
 
 def print_list_of_chromosome_ids():
