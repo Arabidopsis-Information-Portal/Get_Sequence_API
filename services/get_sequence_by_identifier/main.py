@@ -7,6 +7,9 @@ def search(args):
 
     # Get the gene coordinates
     coordinate = tools.get_gene_data(args['identifier'])
+
+    # Validate the input parameters
+    tools.validate_args(coordinate['start'],coordinate['end'],coordinate['chromosome'])
     
     # Build the XML path query
     query_xml = tools.create_xml(coordinate['chromosome'])

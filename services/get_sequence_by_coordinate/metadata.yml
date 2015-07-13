@@ -5,7 +5,7 @@ authors:
     name: "Maria Kim"
     sponsor_organization: JCVI
     sponsor_uri: "http://www.jcvi.org"
-description: "An Araport API wrapper around Thalemine Sequene Access Endpoint to retrieve a json file with a region's nucleotide sequence."
+description: "Retrieve a json of the sequence provided a coordinate location on the A.thaliana genome."
 endpoints: 
   /list: 
     description: "Return a list of A.thaliana chromosome identifiers and length."
@@ -49,3 +49,11 @@ requirements:
   - intermine
 whitelist: 
   - apps.araport.org
+sources:
+    - title: Arabidopsis thaliana Col-0 Genome Sequence
+      description: TAIR10 Arabidopsis thaliana Col-0 Genome Sequence
+      sponsor_organization_name: J. Craig Venter Institute
+      sponsor_uri: http://www.jcvi.org/
+      provider_name: Christopher D. Town
+      provider_email: cdtown@jcvi.org
+      uri: https://www.araport.org

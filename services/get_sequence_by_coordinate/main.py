@@ -5,7 +5,9 @@ def search(args):
     """
     Return the sequence provided a coordinate
     """
-
+    # Validate the input parameters
+    tools.validate_args(args['start'],args['end'],args['chromosome'])
+    
     # Build the XML path query
     query_xml = tools.create_xml(args['chromosome'])
 

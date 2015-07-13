@@ -9,6 +9,31 @@ from intermine.webservice import Service
 BASE_URL = 'https://apps.araport.org/thalemine/service'
 service = Service(BASE_URL)
 
+def validate_args(start,end,chr):
+
+    # Validate coordinate range
+    if start >= end:
+        raise Exception('The end coordinate must be greater than the start!')
+
+    if start <= 0 or end <= 0:
+        raise Exception('The coordinates must be greater than 0!')
+
+    # Validate chromosome identifier
+    case = chr[:1]
+    chromosome_num = chr[3:]
+
+    if case == 'c':
+        # Invalid
+        raise Exception('Invalid chromosome input. Please specify chromosome between Chr1-Chr8 or ChrC or ChrM.')
+    elif chromosome_num == 'C' or chromosome_num == 'M':
+        # Valid chromosome identifier
+        return True
+    elif int(chromosome_num) < 1 or int(chromosome_num) > 9:
+        # Invalid
+        raise Exception('Invalid chromosome input. Please specify chromosome between Chr1-Chr8 or ChrC or ChrM.')
+    else:
+        # Invalid
+        return True
     
 def create_xml(chr):
     """
@@ -62,8 +87,15 @@ def get_sequence_data(start,end,query_xml):
 
     # Print the results
     sequence_json = json.loads(response.text)
-
-    print json.dumps(sequence_json, indent=2)
+    start = sequence_json['features'][0]['start']
+    end = sequence_json['features'][0]['end']
+    seq = sequence_json['features'][0]['seq']
+    new_json = {
+        'start': start,
+        'end': end,
+        'sequence': seq
+    }
+    print json.dumps(new_json, indent=2)
     print '---'
 
 def print_list_of_chromosome_ids():
@@ -75,7 +107,7 @@ def print_list_of_chromosome_ids():
     # Lookup in this table
     query = service.new_query("Chromosome")
 
-    # Return this two rows
+    # Return these two rows
     query.add_view("primaryIdentifier", "sequence.length")
 
     # Iterate through results
