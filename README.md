@@ -8,7 +8,8 @@ These are [Araport](http://www.araport.org) API wrappers around the [Thalemine S
 >>> main.search({'chromosome':'Chr1', 'start':10, 'end':100})
 {
   "start": 10, 
-  "end": 100, 
+  "end": 100,
+  "chromosome": "Chr1",
   "sequence": "gacgggaattgaacccgcgatggtgaattcacaatccactgccttaatccacttggctacatccgcccctacgctactatctattctttt"
 }
 ```
@@ -58,7 +59,8 @@ The list function returns a list of chromosome ids and length.
 >>> main.search({'identifier': 'AT1G01210'})
 {
   "start": 10, 
-  "end": 100, 
+  "end": 100,
+  "chromosome" : "Chr1",
   "sequence": "gacgggaattgaacccgcgatggtgaattcacaatccactgccttaatccacttggctacatccgcccctacgctactatctattctttt"
 }
 ```

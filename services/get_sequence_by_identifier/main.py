@@ -15,7 +15,7 @@ def search(args):
     query_xml = tools.create_xml(coordinate['chromosome'])
     
     # Request the sequence data
-    tools.get_sequence_data(coordinate['start'],coordinate['end'],query_xml)
+    tools.get_sequence_data(coordinate['start'],coordinate['end'],coordinate['chromosome'],query_xml)
 
     
     

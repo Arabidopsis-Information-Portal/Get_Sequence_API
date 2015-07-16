@@ -12,7 +12,7 @@ def search(args):
     query_xml = tools.create_xml(args['chromosome'])
 
     # Request the sequence data
-    tools.get_sequence_data(args['start'],args['end'],query_xml)
+    tools.get_sequence_data(args['start'],args['end'],args['chromosome'],query_xml)
     
     
 def list(args):

@@ -64,7 +64,7 @@ def create_xml(chr):
     return xml
 
 
-def get_sequence_data(start,end,query_xml):
+def get_sequence_data(start,end,chromosome,query_xml):
     """
     Runs a query using the Thalemine Sequence Endpoint
     """
@@ -93,6 +93,7 @@ def get_sequence_data(start,end,query_xml):
     new_json = {
         'start': start,
         'end': end,
+        'chromosome' : chromosome,
         'sequence': seq
     }
     print json.dumps(new_json, indent=2)
