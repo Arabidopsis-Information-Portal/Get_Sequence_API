@@ -9,7 +9,7 @@ from intermine.webservice import Service
 BASE_URL = 'https://apps.araport.org/thalemine/service'
 service = Service(BASE_URL)
 
-def validate_args(start,end,chr):
+def validate_args(start,end,chr,flank):
 
     # Validate coordinate range
     if start >= end:
@@ -34,6 +34,13 @@ def validate_args(start,end,chr):
     else:
         # Invalid
         return True
+
+    # Validate flank size
+    flank = int(flank)
+    if flank == '':
+        args[flank] = 0
+    elif flank < 0:
+        raise Exception('The flanking region must be greater than 0!')
     
 def create_xml(chr):
     """
@@ -64,15 +71,27 @@ def create_xml(chr):
     return xml
 
 
-def get_sequence_data(start,end,chromosome,query_xml):
+def get_sequence_data(start,end,chromosome,query_xml,flank):
     """
     Runs a query using the Thalemine Sequence Endpoint
     """
-        
+
+    start = int(start)
+    end = int(end)
+    flank = int(flank)
+    
     parameters={}
-    parameters['start'] = start
-    parameters['end'] = end
     parameters['query'] = query_xml
+    
+    adjust_start = start - flank
+    if adjust_start <= 0:
+        adjust_start = 1
+        
+    adjust_end = end + flank
+    
+    parameters['start'] = adjust_start
+    parameters['end'] = adjust_end
+
 
     
     # Build the full url

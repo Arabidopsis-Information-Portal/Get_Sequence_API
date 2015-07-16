@@ -18,6 +18,13 @@ endpoints:
         name: identifier
         required: true
         type: string
+      - 
+        default: 0
+        description: "Flanking region"
+        name: flank
+        required: false
+        type: int
+	
 icon: araport.png
 main_module: services.get_sequence_by_identifier.main.py
 name: get_sequence_by_identifier

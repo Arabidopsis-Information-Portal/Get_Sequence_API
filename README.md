@@ -2,10 +2,10 @@
 
 These are [Araport](http://www.araport.org) API wrappers around the [Thalemine Sequence Access Endpoint](https://iodocs.araport.org/thalemine/docs#/ws-sequence) that returns a json of a sequence from the A. thaliana genome.
 
-# get_sequence_by_coordinate: fetch by coordinate location
+# get_sequence_by_coordinate: fetch by coordinate location with an option for upstream/downstream padding
 ```
 >>> import services.get_sequence_by_coordinate.main
->>> main.search({'chromosome':'Chr1', 'start':10, 'end':100})
+>>> main.search({'chromosome':'Chr1', 'start':10, 'end':100,'flank':0})
 {
   "start": 10, 
   "end": 100,
@@ -53,10 +53,10 @@ The list function returns a list of chromosome ids and length.
 }
 ```
 
-# get_sequence_by_identifier: fetch by gene locus
+# get_sequence_by_identifier: fetch by gene locus with an option for upstream/downstream padding
 ```
 >>> import services.get_sequence_by_identifier.main
->>> main.search({'identifier': 'AT1G01210'})
+>>> main.search({'identifier': 'AT1G01210','flank':0})
 {
   "start": 10, 
   "end": 100,

@@ -30,6 +30,12 @@ endpoints:
         name: end
         required: true
         type: integer
+      - 
+        default: 0
+        description: "Flanking region"
+        name: flank
+        required: false
+        type: int
 icon: araport.png
 main_module: services.get_sequence_by_coordinate.main.py
 name: get_sequence_by_coordinate
