@@ -76,7 +76,9 @@ def get_sequence_data(start,end,chromosome,query_xml,flank):
     Runs a query using the Thalemine Sequence Endpoint
     """
 
-    start = int(start)
+    # Adjust the start coordinate since Thalemine Sequence Endpoint
+    # index starts at 0
+    start = int(start) - 1
     end = int(end)
     flank = int(flank)
     
@@ -85,7 +87,7 @@ def get_sequence_data(start,end,chromosome,query_xml,flank):
     
     adjust_start = start - flank
     if adjust_start <= 0:
-        adjust_start = 1
+        adjust_start = 0
         
     adjust_end = end + flank
     
