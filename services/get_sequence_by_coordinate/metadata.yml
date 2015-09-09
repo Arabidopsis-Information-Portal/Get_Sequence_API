@@ -19,7 +19,7 @@ authors:
 
 type: query
 main_module: services.get_sequence_by_coordinate.main.py
-url: https://www.araport.org
+url: https://apps.araport.org/thalemine/service
 validate_request: true
 timeout: 120
 icon: araport.png

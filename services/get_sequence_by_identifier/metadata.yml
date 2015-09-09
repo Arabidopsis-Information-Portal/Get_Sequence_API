@@ -1,50 +1,52 @@
 ---
-authors:
-  -
-    email: msarmien@jcvi.org
-    name: "Maria Kim"
-    sponsor_organization: JCVI
-    sponsor_uri: "http://www.jcvi.org"
-description: "Retrieve a json of the sequence provided a locus identifier."
-endpoints:
-  /list:
-    description: "Does not provide any list"
-  /search:
-    description: "Returns a json with the nucleotide sequence provided a gene identifier."
-    parameters:
-      -
-        default: AT1G01210
-        description: "Gene identifier"
-        name: identifier
-        required: true
-        type: string
-      -
-        default: 0
-        description: "Flanking region"
-        name: flank
-        required: false
-        type: integer
-        format: int64
-        minimum: 0
-icon: araport.png
-main_module: services.get_sequence_by_identifier.main.py
+
 name: get_sequence_by_identifier
+description: Retrieve a json of the sequence provided a locus identifier.
+version: 0.3
 tags:
-  - arabidopsis
-  - sequence
-  - gene
-  - api
-  - intermine
-  - msarmien
-timeout: 120
+    - arabidopsis
+    - sequence
+    - gene
+    - api
+    - intermine
+    - msarmien
+
+authors:
+    - email: msarmien@jcvi.org
+      name: Maria Kim
+      sponsor_organization: JCVI
+      sponsor_uri: http://www.jcvi.org
+
 type: query
-url: "https://www.araport.org"
+main_module: services.get_sequence_by_identifier.main.py
+url: https://apps.araport.org/thalemine/service
 validate_request: true
-version: 0.2
-requirements:
-  - intermine
+timeout: 120
+icon: araport.png
 whitelist:
-  - apps.araport.org
+    - apps.araport.org
+requirements:
+    - intermine
+
+endpoints:
+    /list:
+        description: Does not provide any list
+    /search:
+        description: Returns a json with the nucleotide sequence provided a gene identifier.
+        parameters:
+            - default: AT1G01210
+              description: Gene identifier
+              name: identifier
+              required: true
+              type: string
+            - default: 0
+              description: Flanking region
+              name: flank
+              required: false
+              type: integer
+              format: int64
+              minimum: 0
+
 sources:
     - title: Arabidopsis thaliana Col-0 Genome Sequence
       description: TAIR10 Arabidopsis thaliana Col-0 Genome Sequence
