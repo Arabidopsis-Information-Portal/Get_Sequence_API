@@ -1,42 +1,40 @@
 ---
 
-name: get_sequence_by_coordinate
-description: Retrieve a json of the sequence provided a coordinate location on the A.thaliana genome.
-version: 0.3
+name: get_identifiers_by_coordinate
+description: Retrieve AGI identifiers provided a coordinate location on the A.thaliana genome from ThaleMine.
+version: 0.1
 tags:
     - arabidopsis
-    - sequence
     - gene
-    - api
-    - intermine
-    - msarmien
+    - features
+    - ThaleMine
 
 authors:
-    - email: msarmien@jcvi.org
-      name: Maria Kim
+    - name: Erik Ferlanti
+      email: erik@jcvi.org
       sponsor_organization: JCVI
       sponsor_uri: http://www.jcvi.org
 
 type: query
-main_module: services.get_sequence_by_coordinate.main.py
-url: https://www.araport.org
+main_module: services.get_identifiers_by_coordinate.main.py
+url: https://apps.araport.org/thalemine/service
 validate_request: true
 timeout: 120
-icon: araport.png
 whitelist:
     - apps.araport.org
+icon: araport.png
 requirements:
     - intermine
 
 endpoints:
     /list:
-        description: Return a list of A.thaliana chromosome identifiers and length.
+        description: Return a list of A.thaliana chromosome identifiers and length
     /search:
-        description: Returns a json with the nucleotide sequence provided a coordinate.
+        description: Returns AGI identifiers provided a coordinate location
         parameters:
-            - default: Chr1
+            - name: chromosome
+              default: Chr1
               description: "Chromosome identifier"
-              name: chromosome
               required: true
               type: string
               enum:
@@ -47,25 +45,18 @@ endpoints:
                   - Chr5
                   - ChrC
                   - ChrM
-            - description: "Start coordinate of the desired region"
+            - name: start
+              description: "Start coordinate of the desired region"
               format: int64
-              name: start
               required: true
               type: integer
               minimum: 1
-            - description: "End coordinate of the desired region"
+            - name: end
+              description: "End coordinate of the desired region"
               format: int64
-              name: end
               required: true
               type: integer
               minimum: 1
-            - default: 0
-              description: "Flanking region"
-              name: flank
-              required: false
-              type: integer
-              format: int64
-              minimum: 0
 
 sources:
     - title: Arabidopsis thaliana Col-0 Genome Sequence

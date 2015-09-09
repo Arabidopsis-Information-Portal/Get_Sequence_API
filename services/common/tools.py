@@ -1,4 +1,5 @@
 import urllib
+import urlparse
 import json
 import re
 import requests
@@ -9,39 +10,23 @@ from intermine.webservice import Service
 BASE_URL = 'https://apps.araport.org/thalemine/service'
 service = Service(BASE_URL)
 
-def validate_args(start,end,chr,flank):
-
+def validate_coordinates(start, end):
     # Validate coordinate range
     if start >= end:
         raise Exception('The end coordinate must be greater than the start!')
 
-    if start <= 0 or end <= 0:
-        raise Exception('The coordinates must be greater than 0!')
+def create_json(chromosome, start, end):
+    """
+    Build the query json object for the specified chromosome and range
+    """
+    query = {
+        'regions': ["%s:%s..%s" % (chromosome,start,end)],
+        'featureTypes': ['Gene'],
+        'organism': 'A. thaliana'
+    }
 
-    # Validate chromosome identifier
-    case = chr[:1]
-    chromosome_num = chr[3:]
+    return json.dumps(query)
 
-    if case == 'c':
-        # Invalid
-        raise Exception('Invalid chromosome input. Please specify chromosome between Chr1-Chr8 or ChrC or ChrM.')
-    elif chromosome_num == 'C' or chromosome_num == 'M':
-        # Valid chromosome identifier
-        return True
-    elif int(chromosome_num) < 1 or int(chromosome_num) > 9:
-        # Invalid
-        raise Exception('Invalid chromosome input. Please specify chromosome between Chr1-Chr8 or ChrC or ChrM.')
-    else:
-        # Invalid
-        return True
-
-    # Validate flank size
-    flank = int(flank)
-    if flank == '':
-        args[flank] = 0
-    elif flank < 0:
-        raise Exception('The flanking region must be greater than 0!')
-    
 def create_xml(chr):
     """
     Build the path query xml for the specified chromosome
@@ -64,12 +49,63 @@ def create_xml(chr):
 
     xml += '>     <constraint '
     for key, val in constraint.items():
-        xml +=  str(key) + '=\"' + str(val) + '\" '    
+        xml +=  str(key) + '=\"' + str(val) + '\" '
 
     xml += '/> </query>'
 
     return xml
 
+def extract_agi_identifier(line):
+    id_line = line.split(';')[0]
+    p = re.compile(r'ID=(.*)')
+    ident = ""
+    m = p.search(id_line)
+    if m:
+        ident = m.group(1)
+    return ident
+
+def parse_gff_record(line):
+    """Parse a GFF3 record into individual fields"""
+    fields = line.strip().split('\t')
+    record = {
+        'location': fields[0],
+        'source': fields[1],
+        'type': fields[2],
+        'start': fields[3],
+        'end': fields[4],
+        'strand': fields[6],
+        'locus': extract_agi_identifier(fields[8]),
+        'class': 'locus_property',
+        'source_text_description': 'ThaleMine locus feature'
+    }
+    return record
+
+def do_request(endpoint, **kwargs):
+    """Perform a request to SITE and return JSON."""
+
+    url = urlparse.urljoin(BASE_URL, endpoint)
+    response = requests.get(url, params=kwargs)
+
+    # Raise exception and abort if requests is not successful
+    response.raise_for_status()
+
+    try:
+        # Try to convert result to JSON
+        # abort if not possible
+        return response.json()
+    except ValueError:
+        raise Exception('not a JSON object: {}'.format(response.text))
+
+def do_request_generic(endpoint, **kwargs):
+    """Perform a request to SITE and return response."""
+
+    url = urlparse.urljoin(BASE_URL + '/', endpoint)
+    response = requests.get(url, stream=True, params=kwargs)
+
+    # Raise exception and abort if requests is not successful
+    response.raise_for_status()
+
+    return response
 
 def get_sequence_data(start,end,chromosome,query_xml,flank):
     """
@@ -81,21 +117,19 @@ def get_sequence_data(start,end,chromosome,query_xml,flank):
     start = int(start) - 1
     end = int(end)
     flank = int(flank)
-    
+
     parameters={}
     parameters['query'] = query_xml
-    
+
     adjust_start = start - flank
     if adjust_start <= 0:
         adjust_start = 0
-        
+
     adjust_end = end + flank
-    
+
     parameters['start'] = adjust_start
     parameters['end'] = adjust_end
 
-
-    
     # Build the full url
     url = os.path.join(BASE_URL, 'sequence')
 
@@ -144,7 +178,7 @@ def print_list_of_chromosome_ids():
         # Print the results
         print json.dumps(list, indent=2)
         print '---'
-    
+
 def get_gene_data(gene):
     """
     Query the Thalemine gene table
@@ -152,9 +186,9 @@ def get_gene_data(gene):
 
     # Lookup in this table
     query = service.new_query("Gene")
-    
+
     query.add_constraint("chromosomeLocation.feature.primaryIdentifier", "=", gene, code = "A")
-    
+
     # Return this two rows
     query.add_view("chromosomeLocation.start","chromosomeLocation.end", "chromosome.primaryIdentifier")
 
