@@ -16,7 +16,7 @@ def search(args):
     response = tools.do_request_generic('regions/gff3', **payload)
 
     for line in response.iter_lines():
-        if line.startswith('##'):
+        if line.startswith('##') or line.startswith('Nothing to export'):
             continue
         record = tools.parse_gff_record(line)
         print json.dumps(record, indent=2)

@@ -2,7 +2,7 @@
 
 name: get_identifiers_by_coordinate
 description: Retrieve AGI identifiers provided a coordinate location on the A.thaliana genome from ThaleMine.
-version: 0.1
+version: 0.2
 tags:
     - arabidopsis
     - gene
