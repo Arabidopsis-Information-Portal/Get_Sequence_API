@@ -204,3 +204,63 @@ def get_gene_data(gene):
         }
 
     return coordinate
+
+def get_protein_sequence(identifier, source):
+    """
+    Query the ThaleMine protein table by identifier and data source
+    """
+
+    # get a new query on the class (table) from the model
+    query = service.new_query("Protein")
+
+    # views specify the output columns
+    query.add_view(
+        "primaryIdentifier", "length", "isFragment", "isUniprotCanonical", "name",
+        "dataSets.dataSource.name", "sequence.residues"
+    )
+
+    # set the constraint value(s)
+    query.add_constraint("primaryIdentifier", "=", identifier, code = "A")
+    query.add_constraint("dataSets.dataSource.name", "=", source, code = "B")
+
+    for row in query.rows():
+        """
+        row["name"], row["dataSets.dataSource.name"], row["sequence.residues"]
+        """
+        record = {
+            'class': 'sequence_property',
+            'source_text_description': 'ThaleMine Protein Sequence',
+            'identifier': row["primaryIdentifier"],
+            'length': row["length"],
+            'is_fragment': row["isFragment"],
+            'is_uniprot': row["isUniprotCanonical"],
+            'name': row["name"],
+            'source': row["dataSets.dataSource.name"],
+            'sequence': row["sequence.residues"]
+        }
+        print json.dumps(record, indent=2)
+        print '---'
+
+def get_protein_identifiers(source):
+    """
+    Query the ThaleMine protein table by data source
+    """
+
+    # get a new query on the class (table) from the model
+    query = service.new_query("Protein")
+
+    # views specify the output columns
+    query.add_view("primaryIdentifier", "dataSets.dataSource.name")
+
+    # set the constraint value(s)
+    query.add_constraint("dataSets.dataSource.name", "=", source, code = "A")
+
+    for row in query.rows():
+        ident = row["primaryIdentifier"]
+        if ident:
+            record = {
+                'identifier': row["primaryIdentifier"],
+                'source': row["dataSets.dataSource.name"]
+            }
+            print json.dumps(record, indent=2)
+            print '---'
