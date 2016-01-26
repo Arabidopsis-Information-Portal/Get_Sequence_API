@@ -8,7 +8,7 @@ def search(args):
     # Get the gene coordinates
     coordinate = tools.get_gene_data(args['identifier'])
     if not coordinate:
-        raise Exception("Identifier '%s' could not be found!" % args['identifier'])
+        raise Exception("Identifier '%s' could not be found! Please make sure to use a valid AGI locus identifier." % args['identifier'])
 
     # Validate the coordinates
     tools.validate_coordinates(coordinate['start'], coordinate['end'])
