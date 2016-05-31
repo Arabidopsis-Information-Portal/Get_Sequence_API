@@ -205,7 +205,7 @@ def get_gene_data(gene):
 
     return coordinate
 
-def get_protein_sequence(identifier, source):
+def get_protein_sequence(identifier):
     """
     Query the ThaleMine protein table by identifier and data source
     """
@@ -215,28 +215,40 @@ def get_protein_sequence(identifier, source):
 
     # views specify the output columns
     query.add_view(
-        "primaryIdentifier", "length", "isFragment", "isUniprotCanonical", "name",
-        "dataSets.dataSource.name", "sequence.residues"
+        "primaryIdentifier", "synonyms.value", "length", "isFragment",
+        "isUniprotCanonical", "name", "sequence.residues"
     )
 
     # set the constraint value(s)
     query.add_constraint("primaryIdentifier", "=", identifier, code = "A")
-    query.add_constraint("dataSets.dataSource.name", "=", source, code = "B")
+    query.add_constraint("synonyms.value", "=", identifier, code = "B")
+    query.set_logic("A or B")
 
+
+    synonyms = []
+    found = False
     for row in query.rows():
-        """
-        row["name"], row["dataSets.dataSource.name"], row["sequence.residues"]
-        """
+        ident = row["primaryIdentifier"]
+        length = row["length"]
+        is_fragment = row["isFragment"]
+        is_uniprot = row["isUniprotCanonical"]
+        name = row["name"]
+        sequence = row["sequence.residues"]
+        if row["synonyms.value"]:
+            synonyms.append(row["synonyms.value"])
+        found = True
+
+    if found:
         record = {
             'class': 'sequence_property',
             'source_text_description': 'ThaleMine Protein Sequence',
-            'identifier': row["primaryIdentifier"],
-            'length': row["length"],
-            'is_fragment': row["isFragment"],
-            'is_uniprot': row["isUniprotCanonical"],
-            'name': row["name"],
-            'source': row["dataSets.dataSource.name"],
-            'sequence': row["sequence.residues"]
+            'identifier': ident,
+            'synonyms': synonyms,
+            'length': length,
+            'is_fragment': is_fragment,
+            'is_uniprot': is_uniprot,
+            'name': name,
+            'sequence': sequence
         }
         print json.dumps(record, indent=2)
         print '---'

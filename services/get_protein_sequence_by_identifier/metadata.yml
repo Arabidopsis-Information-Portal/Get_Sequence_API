@@ -1,8 +1,8 @@
 ---
 
 name: get_protein_sequence_by_identifier
-description: Retrieve a JSON of the protein sequence provided a locus identifier and data source.
-version: 0.1
+description: Retrieve a JSON of the protein sequence provided a locus identifier.
+version: 0.2
 tags:
     - arabidopsis
     - sequence
@@ -39,6 +39,7 @@ endpoints:
               enum:
                   - 'Araport'
                   - 'UniProt'
+                  - 'InterPro'
     /search:
         description: Returns a JSON with the protein sequence provided a protein identifier and data source.
         parameters:
@@ -47,14 +48,6 @@ endpoints:
               type: string
               required: true
               default: AT1G65480.1
-            - name: source
-              description: Data source
-              type: string
-              required: true
-              default: Araport
-              enum:
-                  - 'Araport'
-                  - 'UniProt'
 
 sources:
     - title: ThaleMine
