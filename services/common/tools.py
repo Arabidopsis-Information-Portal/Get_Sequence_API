@@ -207,7 +207,9 @@ def get_gene_data(gene):
 
 def get_protein_sequence(identifier):
     """
-    Query the ThaleMine protein table by identifier and data source
+    Query the ThaleMine protein table by identifier
+    NOTE: currently this is an UGLY hack to also catch novel Araport proteins
+    with NULL synonyms!
     """
 
     # get a new query on the class (table) from the model
@@ -239,19 +241,52 @@ def get_protein_sequence(identifier):
         found = True
 
     if found:
-        record = {
-            'class': 'sequence_property',
-            'source_text_description': 'ThaleMine Protein Sequence',
-            'identifier': ident,
-            'synonyms': synonyms,
-            'length': length,
-            'is_fragment': is_fragment,
-            'is_uniprot': is_uniprot,
-            'name': name,
-            'sequence': sequence
-        }
-        print json.dumps(record, indent=2)
-        print '---'
+        printProteinRecord(ident,synonyms,length,is_fragment,is_uniprot,name,sequence)
+    else:
+        # try query with outer join (to find novel Araport proteins [null synonyms])
+        query2 = service.new_query("Protein")
+        query2.add_view(
+            "primaryIdentifier", "synonyms.value", "length", "isFragment",
+            "isUniprotCanonical", "name", "sequence.residues"
+        )
+        query2.add_constraint("primaryIdentifier", "=", identifier, code = "A")
+        query2.add_constraint("synonyms.value", "=", identifier, code = "B")
+        query2.outerjoin("synonyms")
+        found2 = True
+        for row in query2.rows():
+            ident = row["primaryIdentifier"]
+            length = row["length"]
+            is_fragment = row["isFragment"]
+            is_uniprot = row["isUniprotCanonical"]
+            name = row["name"]
+            sequence = row["sequence.residues"]
+            if row["synonyms.value"]:
+                synonyms.append(row["synonyms.value"])
+            found2 = True
+
+        if found2:
+            printProteinRecord(row["primaryIdentifier"],
+                               row["synonyms.value"],
+                               row["length"],
+                               row["isFragment"],
+                               row["isUniprotCanonical"],
+                               row["name"],
+                               row["sequence.residues"])
+
+def printProteinRecord(ident,synonyms,length,is_fragment,is_uniprot,name,sequence):
+    record = {
+        'class': 'sequence_property',
+        'source_text_description': 'ThaleMine Protein Sequence',
+        'identifier': ident,
+        'synonyms': synonyms,
+        'length': length,
+        'is_fragment': is_fragment,
+        'is_uniprot': is_uniprot,
+        'name': name,
+        'sequence': sequence
+    }
+    print json.dumps(record, indent=2)
+    print '---'
 
 def get_protein_identifiers(source):
     """
